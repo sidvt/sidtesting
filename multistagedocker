@@ -1,0 +1,10 @@
+FROM schoolofdevops/maven:spring AS build
+WORKDIR /app
+COPY . .
+RUN mvn package
+
+
+FROM openjdk:8-alpine AS run
+COPY --from=build /app/target/spring-petclinic-2.4.2.jar /run/spring-petclinic.jar
+EXPOSE 8080   
+CMD java -jar /run/spring-petclinic.jar
